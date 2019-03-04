@@ -13,6 +13,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 /**
@@ -25,17 +26,10 @@ public class FullscreenActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fullscreen);
+        hideNavigationBar();
 
-        //下の戻るとかホームを消すやつ SDK19未満は不明
-        if (Build.VERSION.SDK_INT >= 19) {
-            View decor = this.getWindow().getDecorView();
-            decor.setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
-        } else {
-            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        }
-
-        Button mButtonSpica = findViewById(R.id.button_spica);
-        Button mButtonSettings = findViewById(R.id.button_settings);
+        ImageButton mButtonSpica = findViewById(R.id.button_spica);
+        ImageButton mButtonSettings = findViewById(R.id.button_settings);
 
         mButtonSpica.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,9 +56,16 @@ public class FullscreenActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        hideNavigationBar();
+    }
+
+    private void hideNavigationBar() {
+        //下の戻るとかホームを消すやつ SDK19未満は不明
         if (Build.VERSION.SDK_INT >= 19) {
             View decor = this.getWindow().getDecorView();
             decor.setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+        } else {
+            getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         }
     }
 }
